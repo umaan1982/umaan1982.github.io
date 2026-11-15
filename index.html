@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Usman Ahmed Saeed</title>
+<meta name="description" content="Full-stack software engineer in Berlin building compliance SaaS and LLM systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,300..900&family=Schibsted+Grotesk:wght@400..700&family=Martian+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: big name + stat tiles, an 80-LED language strip, then visual project cards on dark "device" panels. Few words. */
+:root {
+  --bg: #f1f1f4;
+  --surface: #ffffff;
+  --ink: #16151c;
+  --muted: #5d5b6a;
+  --line: #d9d8e1;
+  --accent: #5a2ee0;
+  --accent-soft: #ebe5ff;
+  --panel: #14131a;
+  --panel-line: #2a2833;
+  --font-display: "Anybody", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Martian Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --gutter: clamp(16px, 5vw, 64px);
+  --max: 1160px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e0d13; --surface: #17161e; --ink: #ecebf3; --muted: #9b98ab; --line: #2a2834;
+    --accent: #a98cff; --accent-soft: #241d3d; --panel: #08070c; --panel-line: #24222d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e0d13; --surface: #17161e; --ink: #ecebf3; --muted: #9b98ab; --line: #2a2834;
+  --accent: #a98cff; --accent-soft: #241d3d; --panel: #08070c; --panel-line: #24222d;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.5; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+svg { display: block; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter); }
+.label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+
+/* top bar */
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 22px; padding-bottom: 22px; flex-wrap: wrap; }
+.topbar nav { display: flex; gap: 22px; flex-wrap: wrap; }
+.topbar nav a { color: var(--muted); }
+.topbar nav a:hover { color: var(--accent); }
+.handle { font-family: var(--font-mono); font-size: 12.5px; }
+.handle b { color: var(--accent); font-weight: 500; }
+
+/* hero */
+.hero { padding-top: clamp(28px, 6vw, 72px); padding-bottom: 32px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 48px; align-items: end; }
+.name { font-family: var(--font-display); line-height: 0.86; text-transform: uppercase; letter-spacing: -0.01em; }
+.name .wide { display: block; font-size: clamp(54px, 11.5vw, 148px); font-weight: 860; font-variation-settings: "wdth" 150; }
+.name .narrow { display: block; font-size: clamp(54px, 11.5vw, 148px); font-weight: 300; font-variation-settings: "wdth" 56; color: var(--muted); }
+.thesis { margin-top: 24px; font-size: clamp(18px, 2vw, 22px); max-width: 30em; }
+.thesis b { font-weight: 600; color: var(--accent); }
+.cta { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1.5px solid var(--ink); border-radius: 999px; font-weight: 600; font-size: 15px; }
+.btn.primary { background: var(--ink); color: var(--bg); }
+.btn.primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.primary:hover { color: #fff; }
+.btn svg { width: 16px; height: 16px; }
+
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 6px; }
+.stat .v { font-family: var(--font-display); font-size: 40px; line-height: 1; font-weight: 800; font-variation-settings: "wdth" 80; font-variant-numeric: tabular-nums; }
+.stat .v small { font-size: 0.5em; font-weight: 600; color: var(--muted); margin-left: 2px; }
+.stat .k { font-size: 13.5px; color: var(--muted); line-height: 1.3; }
+
+/* LED strip */
+.strip-block { padding-top: 18px; }
+.strip { background: linear-gradient(180deg, #23212c, #0b0a10 55%); border-radius: 10px; padding: 12px 14px; display: flex; gap: 3px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 10px 30px -14px rgba(20,10,60,0.5); }
+.led { flex: 1 1 0; height: 16px; border-radius: 3px; background: var(--c); box-shadow: 0 0 10px 1px color-mix(in srgb, var(--c) 70%, transparent), 0 0 2px var(--c); transition: opacity 260ms ease, filter 180ms ease, box-shadow 260ms ease; }
+.led.hot { filter: brightness(1.6) saturate(1.2); box-shadow: 0 0 18px 4px var(--c), 0 0 3px #fff; }
+.strip.focus .led:not(.on) { opacity: 0.13; box-shadow: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 4px; margin-top: 12px; align-items: center; }
+.legend .label { margin-right: 8px; }
+.legend button { font: inherit; font-family: var(--font-mono); font-size: 12px; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px 5px 9px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+.legend button:hover, .legend button.active { border-color: var(--ink); }
+.legend .dot { width: 9px; height: 9px; border-radius: 2px; background: var(--c); box-shadow: 0 0 6px var(--c); }
+.legend .n { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* sections */
+section { padding-top: clamp(64px, 9vw, 104px); }
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; border-bottom: 1.5px solid var(--ink); padding-bottom: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+.sec-head h2 { font-family: var(--font-display); font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; font-variation-settings: "wdth" 72; text-transform: uppercase; line-height: 1; }
+
+/* project cards */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease; }
+.card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c) 60%, var(--line)); box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--c) 70%, transparent); }
+.viz { background: radial-gradient(120% 90% at 50% 110%, color-mix(in srgb, var(--c) 22%, transparent), transparent 60%), var(--panel); height: 210px; position: relative; display: grid; place-items: center; overflow: hidden; border-bottom: 1px solid var(--panel-line); }
+.viz svg { width: 100%; height: 100%; }
+.body { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.title-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.card h3 { font-family: var(--font-display); font-size: 28px; font-weight: 760; font-variation-settings: "wdth" 88; line-height: 1.05; }
+.card p { color: var(--muted); font-size: 15.5px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+.chip { font-family: var(--font-mono); font-size: 11.5px; padding: 4px 9px; border-radius: 6px; background: var(--accent-soft); color: var(--ink); white-space: nowrap; }
+.links { display: flex; gap: 8px; flex-wrap: wrap; }
+.icon-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; }
+.icon-link:hover { border-color: var(--accent); color: var(--accent); }
+.icon-link svg { width: 14px; height: 14px; }
+.icon-link.live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #2fbf71; box-shadow: 0 0 6px #2fbf71; }
+
+/* led-strip viz animation */
+@keyframes flow { from { background-position: 0 0; } to { background-position: 400px 0; } }
+.mon-bar { animation: flow 6s linear infinite; }
+
+/* more repos card */
+.more .viz { background: var(--panel); place-items: stretch; padding: 18px; }
+.repo-cloud { display: flex; flex-wrap: wrap; gap: 7px; align-content: center; }
+.repo-cloud a { font-family: var(--font-mono); font-size: 11.5px; color: #d9d6e6; border: 1px solid #34313f; border-radius: 6px; padding: 5px 9px; display: inline-flex; align-items: center; gap: 7px; }
+.repo-cloud a i { width: 7px; height: 7px; border-radius: 2px; background: var(--c); }
+.repo-cloud a:hover { border-color: #a98cff; color: #fff; }
+
+/* experience */
+.jobs { display: grid; gap: 0; }
+.job { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 28px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.job:first-child { padding-top: 4px; }
+.job .when { padding-top: 5px; }
+.job h3 { font-size: 20px; font-weight: 650; line-height: 1.3; }
+.job h3 span { color: var(--muted); font-weight: 400; }
+.job p { color: var(--muted); font-size: 15.5px; margin-top: 4px; }
+.metrics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.metric { display: inline-flex; align-items: baseline; gap: 7px; padding: 6px 11px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); font-size: 13.5px; color: var(--muted); }
+.metric b { font-family: var(--font-body); font-size: 16px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+.ladder { display: flex; align-items: center; gap: 0; margin-top: 12px; max-width: 520px; }
+.ladder .step { display: flex; flex-direction: column; gap: 4px; flex: 1; font-size: 12.5px; color: var(--muted); }
+.ladder .step::before { content: ""; height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--muted) 35%, var(--line)); margin-right: 4px; }
+.ladder .step.last::before { background: color-mix(in srgb, var(--muted) 70%, var(--line)); }
+.ladder .step.last { color: var(--ink); }
+.ladder .step.now::before { background: var(--accent); box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 60%, transparent); }
+.ladder .step.now { color: var(--accent); font-weight: 600; }
+
+/* research */
+.paper { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.paper .viz { height: auto; min-height: 170px; border-bottom: 0; border-right: 1px solid var(--panel-line); }
+.paper .body { justify-content: center; }
+.paper h3 { font-family: var(--font-display); font-size: clamp(22px, 2.4vw, 28px); font-weight: 700; font-variation-settings: "wdth" 84; line-height: 1.12; }
+
+/* skills */
+.skills { display: grid; gap: 14px; }
+.skill-row { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 28px; align-items: center; }
+.skill-row .chips { margin: 0; padding: 0; }
+.skill-row .chip { background: transparent; border: 1px solid var(--line); font-size: 12px; padding: 5px 10px; }
+
+/* contact */
+.contact { padding-top: clamp(72px, 10vw, 130px); padding-bottom: 48px; }
+.contact h2 { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(44px, 8vw, 104px); line-height: 0.9; font-weight: 860; font-variation-settings: "wdth" 120; }
+.contact h2 span { font-weight: 300; font-variation-settings: "wdth" 56; color: var(--muted); }
+.contact .cta { margin-top: 30px; }
+.contact .email { margin-top: 14px; font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+footer { padding: 24px 0 40px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line); }
+
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 1fr; gap: 32px; }
+  .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .job, .skill-row { grid-template-columns: 1fr; gap: 6px; }
+}
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .paper { grid-template-columns: 1fr; }
+  .paper .viz { border-right: 0; border-bottom: 1px solid var(--panel-line); }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .topbar nav { gap: 14px; font-size: 14px; }
+  .strip { padding: 9px 8px; gap: 1.5px; }
+  .led { height: 12px; border-radius: 1.5px; }
+  .viz { height: 180px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .led, .card { transition: none; }
+  .mon-bar, .pulse { animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-gh" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.71 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></symbol>
+  <symbol id="i-in" viewBox="0 0 16 16"><path fill="currentColor" d="M0 1.15C0 .52.52 0 1.17 0h13.66C15.48 0 16 .52 16 1.15v13.7c0 .63-.52 1.15-1.17 1.15H1.17C.52 16 0 15.48 0 14.85V1.15ZM4.94 13.4V6.17H2.54v7.23h2.4ZM3.74 5.18c.84 0 1.36-.55 1.36-1.25-.02-.71-.52-1.25-1.34-1.25-.82 0-1.36.54-1.36 1.25 0 .7.52 1.25 1.33 1.25h.01Zm4.91 8.22V9.36c0-.21.02-.43.08-.58.17-.43.57-.88 1.23-.88.87 0 1.22.66 1.22 1.64v3.86h2.4V9.25c0-2.22-1.18-3.25-2.76-3.25-1.27 0-1.84.7-2.16 1.2v.02h-.02l.02-.02V6.17h-2.4c.03.68 0 7.23 0 7.23h2.4Z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M1.5 3.5h13v9h-13zM1.5 4l6.5 5 6.5-5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M4 12 12 4M5.5 4H12v6.5"/></symbol>
+</svg>
+
+<header class="wrap topbar">
+  <span class="handle">github.com/<b>umaan1982</b></span>
+  <nav aria-label="Sections">
+    <a href="#work">Work</a>
+    <a href="#experience">Experience</a>
+    <a href="#research">Research</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <h1 class="name"><span class="wide">Usman</span><span class="narrow">Ahmed Saeed</span></h1>
+      <p class="thesis">Full-stack engineer in Berlin, building <b>compliance SaaS</b> and <b>LLM systems</b> at Packmatic.</p>
+      <div class="cta">
+        <a class="btn primary" href="#work">See my work</a>
+        <a class="btn" href="https://github.com/umaan1982"><svg aria-hidden="true"><use href="#i-gh"/></svg>GitHub</a>
+        <a class="btn" href="https://linkedin.com/in/usman-ahmed-saeed"><svg aria-hidden="true"><use href="#i-in"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="v">4<small>yrs</small></span><span class="k">Shipping production software</span></div>
+      <div class="stat"><span class="v">11</span><span class="k">Enterprise customers shipped for</span></div>
+      <div class="stat"><span class="v">19</span><span class="k">Public repositories</span></div>
+      <div class="stat"><span class="v">IEEE</span><span class="k">Published 2025</span></div>
+    </div>
+  </div>
+
+  <div class="wrap strip-block">
+    <div class="strip" id="strip" role="img" aria-label="80 lights coloured by each language's share of code across public repositories"></div>
+    <div class="legend" id="legend"><span class="label">Code by language</span></div>
+  </div>
+
+  <!-- ===== WORK ===== -->
+  <section id="work" class="wrap">
+    <div class="sec-head"><h2>Selected work</h2><span class="label">Side projects</span></div>
+    <div class="grid">
+
+      <!-- learning-coach -->
+      <article class="card" style="--c:#ffd23f">
+        <div class="viz" aria-hidden="true">
+          <svg viewBox="0 0 400 210">
+            <g transform="translate(70 42)">
+              <rect x="16" y="-8" width="150" height="104" rx="10" fill="#1f1d27" stroke="#34313f"/>
+              <rect x="8" y="0" width="150" height="104" rx="10" fill="#26232f" stroke="#3a3746"/>
+              <rect x="0" y="8" width="150" height="104" rx="10" fill="#2e2a3a" stroke="#ffd23f" stroke-opacity="0.7"/>
+              <text x="75" y="52" text-anchor="middle" font-family="Anybody, sans-serif" font-size="24" font-weight="700" fill="#f3f0ff">die Brücke</text>
+              <text x="75" y="76" text-anchor="middle" font-family="Martian Mono, monospace" font-size="10" fill="#9b98ab">recall · tap to flip</text>
+              <g transform="translate(26 90)">
+                <rect width="28" height="12" rx="3" fill="#ff4f6d" opacity="0.85"/><rect x="34" width="28" height="12" rx="3" fill="#ffd23f" opacity="0.85"/><rect x="68" width="28" height="12" rx="3" fill="#43d98c" opacity="0.85"/>
+              </g>
+            </g>
+            <g transform="translate(300 105)">
+              <circle r="44" fill="none" stroke="#2c2a36" stroke-width="9"/>
+              <circle r="44" fill="none" stroke="#ffd23f" stroke-width="9" stroke-linecap="round" stroke-dasharray="276" stroke-dashoffset="64" transform="rotate(-90)"/>
+              <text y="2" text-anchor="middle" font-family="Anybody, sans-serif" font-size="26" font-weight="800" fill="#f3f0ff">B1</text>
+              <text y="20" text-anchor="middle" font-family="Martian Mono, monospace" font-size="9" fill="#9b98ab">goal</text>
+            </g>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="title-row"><h3>learning-coach</h3><span class="label">2026</span></div>
+          <p>A Claude Code plugin that coaches you through a course with spaced repetition and mock exams.</p>
+          <div class="chips"><span class="chip">JavaScript</span><span class="chip">Python</span><span class="chip">React</span><span class="chip">Claude</span></div>
+          <div class="links"><a class="icon-link" href="https://github.com/umaan1982/learning-coach"><svg aria-hidden="true"><use href="#i-gh"/></svg>Code</a></div>
+        </div>
+      </article>
+
+      <!-- api-pentest -->
+      <article class="card" style="--c:#4c8dff">
+        <div class="viz" aria-hidden="true">
+          <svg viewBox="0 0 400 210" font-family="Martian Mono, monospace" font-size="11.5">
+            <rect x="40" y="26" width="320" height="158" rx="10" fill="#1a1922" stroke="#2f2c3a"/>
+            <circle cx="58" cy="42" r="4" fill="#ff5f57"/><circle cx="72" cy="42" r="4" fill="#febc2e"/><circle cx="86" cy="42" r="4" fill="#28c840"/>
+            <text x="58" y="72" fill="#9b98ab">$ api-pentest scan --ai</text>
+            <text x="58" y="96" fill="#43d98c">✓</text><text x="76" y="96" fill="#d9d6e6">API1  Object auth</text><text x="342" y="96" text-anchor="end" fill="#43d98c">pass</text>
+            <text x="58" y="117" fill="#ff4f6d">✗</text><text x="76" y="117" fill="#d9d6e6">API3  Property auth</text><text x="342" y="117" text-anchor="end" fill="#ff4f6d">high</text>
+            <text x="58" y="138" fill="#43d98c">✓</text><text x="76" y="138" fill="#d9d6e6">API5  Function auth</text><text x="342" y="138" text-anchor="end" fill="#43d98c">pass</text>
+            <text x="58" y="159" fill="#ffd23f">!</text><text x="76" y="159" fill="#d9d6e6">API8  Misconfig</text><text x="342" y="159" text-anchor="end" fill="#ffd23f">low</text>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="title-row"><h3>api-pentest</h3><span class="label">2026</span></div>
+          <p>AI-driven OWASP API security testing, mapped to ISO 27001 controls.</p>
+          <div class="chips"><span class="chip">TypeScript</span><span class="chip">Claude API</span><span class="chip">OWASP</span><span class="chip">NestJS</span></div>
+          <div class="links"><a class="icon-link" href="https://github.com/umaan1982/api-pentest"><svg aria-hidden="true"><use href="#i-gh"/></svg>Code</a></div>
+        </div>
+      </article>
+
+      <!-- ledctl -->
+      <article class="card" style="--c:#43d98c">
+        <div class="viz" aria-hidden="true">
+          <div style="position:relative;width:230px">
+            <div class="mon-bar" style="height:9px;border-radius:5px;margin:0 18px 6px;background:linear-gradient(90deg,#ff4f6d,#ffd23f,#43d98c,#2fd6d0,#4c8dff,#a97bff,#ff4f6d);background-size:400px 100%;box-shadow:0 0 22px 4px rgba(120,200,255,.35),0 -8px 30px rgba(255,120,200,.25)"></div>
+            <div style="height:132px;border:6px solid #2a2834;border-radius:10px;background:linear-gradient(135deg,#3b2a7a,#1d4a6e 50%,#1f6b52);"></div>
+            <div style="width:46px;height:16px;margin:0 auto;background:#2a2834"></div>
+            <div style="width:96px;height:6px;margin:0 auto;border-radius:3px;background:#2a2834"></div>
+          </div>
+        </div>
+        <div class="body">
+          <div class="title-row"><h3>ledctl</h3><span class="label">2026</span></div>
+          <p>Open-source controller for USB monitor light bars, with screen-synced lighting.</p>
+          <div class="chips"><span class="chip">Python</span><span class="chip">USB HID</span><span class="chip">DXGI</span><span class="chip">Windows</span></div>
+          <div class="links"><a class="icon-link" href="https://github.com/umaan1982/ledctl"><svg aria-hidden="true"><use href="#i-gh"/></svg>Code</a></div>
+        </div>
+      </article>
+
+      <!-- route-finder -->
+      <article class="card" style="--c:#2fd6d0">
+        <div class="viz" aria-hidden="true">
+          <svg viewBox="0 0 400 210" font-family="Martian Mono, monospace">
+            <path d="M80 140 C 150 140, 160 70, 230 80 S 300 120, 320 70" fill="none" stroke="#2fd6d0" stroke-width="3" stroke-linecap="round"/>
+            <path d="M80 140 C 140 170, 250 170, 320 70" fill="none" stroke="#4a4757" stroke-width="2" stroke-dasharray="5 6"/>
+            <circle cx="80" cy="140" r="9" fill="#14131a" stroke="#2fd6d0" stroke-width="3"/>
+            <circle cx="320" cy="70" r="9" fill="#2fd6d0"/>
+            <circle cx="210" cy="82" r="4" fill="#14131a" stroke="#2fd6d0" stroke-width="2"/>
+            <text x="80" y="172" text-anchor="middle" font-size="13" font-weight="500" fill="#f3f0ff">HAM</text>
+            <text x="320" y="48" text-anchor="middle" font-size="13" font-weight="500" fill="#f3f0ff">AMS</text>
+            <g transform="translate(150 28)"><rect width="76" height="24" rx="12" fill="#1f3e3c"/><text x="38" y="16" text-anchor="middle" font-size="10.5" fill="#7ff0e6">fastest</text></g>
+            <g transform="translate(170 166)"><rect width="84" height="24" rx="12" fill="#26242f"/><text x="42" y="16" text-anchor="middle" font-size="10.5" fill="#c9c6d6">cheapest</text></g>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="title-row"><h3>route-finder</h3><span class="label">2025</span></div>
+          <p>Finds the cheapest and fastest trains from Hamburg to Amsterdam.</p>
+          <div class="chips"><span class="chip">Vue</span><span class="chip">Nuxt</span><span class="chip">TypeScript</span></div>
+          <div class="links"><a class="icon-link live" href="https://route-finder-wine.vercel.app">Live demo</a><a class="icon-link" href="https://github.com/umaan1982/route-finder"><svg aria-hidden="true"><use href="#i-gh"/></svg>Code</a></div>
+        </div>
+      </article>
+
+      <!-- watch-party -->
+      <article class="card" style="--c:#ff7fd1">
+        <div class="viz" aria-hidden="true">
+          <svg viewBox="0 0 400 210" font-family="Martian Mono, monospace">
+            <rect x="90" y="30" width="220" height="124" rx="12" fill="#1f1d27" stroke="#34313f"/>
+            <circle cx="200" cy="92" r="26" fill="#ff7fd1"/>
+            <path d="M192 80 L212 92 L192 104 Z" fill="#14131a"/>
+            <rect x="106" y="136" width="188" height="4" rx="2" fill="#34313f"/>
+            <rect x="106" y="136" width="96" height="4" rx="2" fill="#ff7fd1"/>
+            <circle cx="202" cy="138" r="6" fill="#fff"/>
+            <g transform="translate(138 176)">
+              <circle r="11" fill="#ffd23f"/><circle cx="22" r="11" fill="#4c8dff" stroke="#14131a" stroke-width="2"/><circle cx="44" r="11" fill="#43d98c" stroke="#14131a" stroke-width="2"/>
+            </g>
+            <g transform="translate(200 164)"><rect width="74" height="24" rx="6" fill="#2b2833"/><text x="37" y="16" text-anchor="middle" font-size="11" letter-spacing="1" fill="#f3f0ff">K7Q2XD</text></g>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="title-row"><h3>watch-party</h3><span class="label">2026</span></div>
+          <p>Watch YouTube in sync with friends using a Chrome extension and a room code.</p>
+          <div class="chips"><span class="chip">JavaScript</span><span class="chip">WebSocket</span><span class="chip">Chrome</span></div>
+          <div class="links"><a class="icon-link live" href="https://watch-party-wheat-eight.vercel.app">Live demo</a><a class="icon-link" href="https://github.com/umaan1982/watch-party"><svg aria-hidden="true"><use href="#i-gh"/></svg>Code</a></div>
+        </div>
+      </article>
+
+      <!-- more -->
+      <article class="card more" style="--c:#a98cff">
+        <div class="viz">
+          <div class="repo-cloud">
+            <a href="https://github.com/umaan1982/type-registry" style="--c:#4c8dff"><i></i>type-registry</a>
+            <a href="https://github.com/umaan1982/api-stress-skill" style="--c:#4c8dff"><i></i>api-stress-skill</a>
+            <a href="https://github.com/umaan1982/rust-microservice" style="--c:#ff8a3d"><i></i>rust-microservice</a>
+            <a href="https://github.com/umaan1982/sorting-algorithm" style="--c:#43d98c"><i></i>task-scheduler</a>
+            <a href="https://github.com/umaan1982/MultiClientRequestHandler" style="--c:#ff9ad0"><i></i>multi-client-server</a>
+            <a href="https://github.com/umaan1982/sleep-detection" style="--c:#ffd23f"><i></i>sleep-detection</a>
+            <a href="https://github.com/umaan1982/Demo-Project-Nest-JS-Angular" style="--c:#4c8dff"><i></i>nestjs-angular</a>
+            <a href="https://github.com/umaan1982/ClinicManagementSystem" style="--c:#a97bff"><i></i>clinic-system</a>
+            <a href="https://github.com/umaan1982/FitnessTracker" style="--c:#ede6d6"><i></i>fitness-tracker</a>
+            <a href="https://github.com/umaan1982/DisasterRecoveryScripts" style="--c:#ff4f6d"><i></i>azure-dr-scripts</a>
+            <a href="https://github.com/umaan1982/socketio" style="--c:#ffd23f"><i></i>socketio</a>
+          </div>
+        </div>
+        <div class="body">
+          <div class="title-row"><h3>More on GitHub</h3><span class="label">14 repos</span></div>
+          <p>Backend services, systems code and cloud scripts.</p>
+          <div class="links" style="margin-top:auto"><a class="icon-link" href="https://github.com/umaan1982?tab=repositories"><svg aria-hidden="true"><use href="#i-arrow"/></svg>All repositories</a></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===== EXPERIENCE ===== -->
+  <section id="experience" class="wrap">
+    <div class="sec-head"><h2>Experience</h2><span class="label">2022 &ndash; now</span></div>
+    <div class="jobs">
+      <article class="job">
+        <span class="label when">May 2025 &ndash; now</span>
+        <div>
+          <h3>Software Engineer <span>&middot; Packmatic, Berlin</span></h3>
+          <p>EU packaging-compliance platform: LLM document extraction, bulk DoC workflows, AWS infrastructure in Terraform and CDK.</p>
+          <div class="metrics">
+            <span class="metric"><b>15&rarr;2</b>min spec review</span>
+            <span class="metric"><b>&minus;90%</b>peak memory, 1M-record job</span>
+            <span class="metric"><b>28%</b>of ARR served</span>
+          </div>
+          <div class="ladder" aria-label="Promotions">
+            <span class="step">Working Student</span>
+            <span class="step">Junior SE</span>
+            <span class="step now">Software Engineer</span>
+          </div>
+        </div>
+      </article>
+      <article class="job">
+        <span class="label when">Sep 2024 &ndash; Mar 2025</span>
+        <div>
+          <h3>Working Student <span>&middot; XU Group, Berlin</span></h3>
+          <p>Authentication and product analytics across NestJS services.</p>
+          <div class="metrics"><span class="metric">NestJS</span><span class="metric">MongoDB</span><span class="metric">Clerk</span><span class="metric">PostHog</span></div>
+        </div>
+      </article>
+      <article class="job">
+        <span class="label when">Jul 2022 &ndash; Mar 2024</span>
+        <div>
+          <h3>Junior Software Engineer <span>&middot; Spur Solutions, Karachi</span></h3>
+          <p>.NET services, support platform and Azure deployments.</p>
+          <div class="metrics">
+            <span class="metric"><b>+40%</b>email throughput</span>
+            <span class="metric"><b>&minus;40%</b>ticket time</span>
+            <span class="metric"><b>&minus;75%</b>setup time</span>
+          </div>
+          <div class="ladder" aria-label="Promotions">
+            <span class="step">Software Engineering Trainee</span>
+            <span class="step last">Junior Software Engineer</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== RESEARCH ===== -->
+  <section id="research" class="wrap">
+    <div class="sec-head"><h2>Research</h2><span class="label">MSc CS &middot; Universit&auml;t Siegen</span></div>
+    <article class="paper" style="--c:#a97bff">
+      <div class="viz" aria-hidden="true">
+        <svg viewBox="0 0 220 170">
+          <g fill="none" stroke="#a97bff" stroke-linecap="round">
+            <path d="M60 120 a20 20 0 0 1 0 -28" stroke-width="3" opacity="0.9"/>
+            <path d="M50 130 a34 34 0 0 1 0 -48" stroke-width="3" opacity="0.6"/>
+            <path d="M40 140 a48 48 0 0 1 0 -68" stroke-width="3" opacity="0.35"/>
+          </g>
+          <rect x="66" y="98" width="10" height="44" rx="2" fill="#a97bff"/>
+          <path d="M90 106 H170" stroke="#4a4757" stroke-width="2" stroke-dasharray="4 5"/>
+          <g fill="#a97bff"><rect x="96" y="100" width="14" height="12" rx="2"/><rect x="122" y="100" width="14" height="12" rx="2" opacity="0.7"/><rect x="148" y="100" width="14" height="12" rx="2" opacity="0.45"/></g>
+          <text x="130" y="138" text-anchor="middle" font-family="Martian Mono, monospace" font-size="10" fill="#9b98ab">5G ⇄ TSN</text>
+        </svg>
+      </div>
+      <div class="body">
+        <span class="label">IEEE &middot; ASIANComNet 2025</span>
+        <h3>An Adaptive Channel Modulation and Coding Scheme for 5G&ndash;TSN Integration</h3>
+        <div class="links"><a class="icon-link" href="https://ieeexplore.ieee.org/document/11579586"><svg aria-hidden="true"><use href="#i-arrow"/></svg>IEEE Xplore</a></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills" class="wrap">
+    <div class="sec-head"><h2>Skills</h2></div>
+    <div class="skills">
+      <div class="skill-row"><span class="label">Languages</span><div class="chips"><span class="chip">TypeScript</span><span class="chip">Python</span><span class="chip">C#</span><span class="chip">Java</span><span class="chip">C++</span><span class="chip">Rust</span></div></div>
+      <div class="skill-row"><span class="label">AI</span><div class="chips"><span class="chip">AWS Bedrock</span><span class="chip">Claude</span><span class="chip">Claude Code</span><span class="chip">LLM evaluation</span><span class="chip">Agentic workflows</span></div></div>
+      <div class="skill-row"><span class="label">Backend</span><div class="chips"><span class="chip">NestJS</span><span class="chip">Node.js</span><span class="chip">ASP.NET</span><span class="chip">FastAPI</span><span class="chip">GraphQL</span></div></div>
+      <div class="skill-row"><span class="label">Frontend</span><div class="chips"><span class="chip">React</span><span class="chip">Angular</span><span class="chip">Vue</span><span class="chip">Next.js</span></div></div>
+      <div class="skill-row"><span class="label">Data</span><div class="chips"><span class="chip">PostgreSQL</span><span class="chip">MongoDB</span><span class="chip">Redis</span><span class="chip">Elasticsearch</span></div></div>
+      <div class="skill-row"><span class="label">Cloud</span><div class="chips"><span class="chip">AWS ECS</span><span class="chip">Lambda</span><span class="chip">RDS</span><span class="chip">IAM</span><span class="chip">Azure</span><span class="chip">Terraform</span><span class="chip">CDK</span><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">GitHub OIDC</span></div></div>
+      <div class="skill-row"><span class="label">Observability</span><div class="chips"><span class="chip">Datadog</span><span class="chip">Sentry</span><span class="chip">PostHog</span><span class="chip">SonarQube</span></div></div>
+      <div class="skill-row"><span class="label">Testing</span><div class="chips"><span class="chip">Jest</span><span class="chip">Vitest</span><span class="chip">Playwright</span><span class="chip">Cypress</span></div></div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="wrap contact">
+    <h2>Get in<br><span>touch</span></h2>
+    <div class="cta">
+      <a class="btn primary" href="mailto:umaan1982@gmail.com"><svg aria-hidden="true"><use href="#i-mail"/></svg>Email me</a>
+      <a class="btn" href="https://linkedin.com/in/usman-ahmed-saeed"><svg aria-hidden="true"><use href="#i-in"/></svg>LinkedIn</a>
+      <a class="btn" href="https://github.com/umaan1982"><svg aria-hidden="true"><use href="#i-gh"/></svg>GitHub</a>
+    </div>
+    <p class="email">umaan1982@gmail.com</p>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>Usman Ahmed Saeed &middot; Berlin</span>
+  <span>&copy; 2026</span>
+</footer>
+
+<script>
+(function () {
+  // Bytes of code per language across own public repos (markup excluded), from the GitHub API.
+  var langs = [
+    { name: "JavaScript", bytes: 205995, c: "#ffd23f" },
+    { name: "TypeScript", bytes: 203996, c: "#4c8dff" },
+    { name: "Python",     bytes: 183114, c: "#43d98c" },
+    { name: "C++",        bytes: 39954,  c: "#ff9ad0" },
+    { name: "C#",         bytes: 28618,  c: "#a97bff" },
+    { name: "Vue",        bytes: 16427,  c: "#2fd6d0" },
+    { name: "Bicep",      bytes: 12829,  c: "#ff4f6d" },
+    { name: "Rust",       bytes: 10583,  c: "#ff8a3d" },
+    { name: "Java",       bytes: 5497,   c: "#ede6d6" }
+  ];
+  var TOTAL = 80;
+  var sum = langs.reduce(function (a, l) { return a + l.bytes; }, 0);
+  langs.forEach(function (l) { var e = l.bytes / sum * TOTAL; l.n = Math.max(1, Math.floor(e)); l.r = e - Math.floor(e); });
+  var used = langs.reduce(function (a, l) { return a + l.n; }, 0);
+  langs.slice().sort(function (a, b) { return b.r - a.r; }).forEach(function (l) { if (used < TOTAL) { l.n++; used++; } });
+  while (used > TOTAL) { var big = langs.reduce(function (a, b) { return a.n > b.n ? a : b; }); big.n--; used--; }
+
+  var strip = document.getElementById("strip");
+  var legend = document.getElementById("legend");
+  var leds = [];
+  langs.forEach(function (l, li) {
+    for (var i = 0; i < l.n; i++) {
+      var d = document.createElement("span");
+      d.className = "led"; d.style.setProperty("--c", l.c); d.dataset.lang = li;
+      strip.appendChild(d); leds.push(d);
+    }
+    var b = document.createElement("button");
+    b.type = "button"; b.style.setProperty("--c", l.c);
+    var pct = Math.round(l.bytes / sum * 100);
+    b.innerHTML = '<span class="dot"></span>' + l.name + ' <span class="n">' + (pct < 1 ? "<1" : pct) + '%</span>';
+    function on() {
+      strip.classList.add("focus");
+      leds.forEach(function (x) { x.classList.toggle("on", +x.dataset.lang === li); });
+      b.classList.add("active");
+    }
+    function off() { strip.classList.remove("focus"); b.classList.remove("active"); }
+    b.addEventListener("mouseenter", on); b.addEventListener("focus", on);
+    b.addEventListener("mouseleave", off); b.addEventListener("blur", off);
+    legend.appendChild(b);
+  });
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduce) {
+    leds.forEach(function (d, i) {
+      setTimeout(function () { d.classList.add("hot"); setTimeout(function () { d.classList.remove("hot"); }, 240); }, 400 + i * 16);
+    });
+  }
+})();
+</script>
+</body>
+</html>
